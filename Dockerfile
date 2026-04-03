@@ -1,28 +1,11 @@
-FROM alpine:latest
+FROM ubuntu:22.04
 
-RUN apk add --no-cache \
-    openssh-server \
-    openssh-client \
-    bash \
-    curl \
-    socat \
-    tini \
-    && ssh-keygen -A \
-    && rm -rf /var/cache/apk/*
+RUN apt update && apt install -y openssh-server websockify python3
 
-RUN mkdir -p /var/run/sshd /root/.ssh /home
+RUN useradd -m -s /bin/bash WorldSolution && echo "WorldSolution:mondevpn" | chpasswd
 
-RUN echo 'root:changeme' | chpasswd && \
-    sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config && \
-    sed -i 's/#PasswordAuthentication yes/PasswordAuthentication yes/' /etc/ssh/sshd_config && \
-    sed -i 's/#ChallengeResponseAuthentication yes/ChallengeResponseAuthentication no/' /etc/ssh/sshd_config && \
-    sed -i 's/#UseDNS yes/UseDNS no/' /etc/ssh/sshd_config && \
-    echo "Port 443" >> /etc/ssh/sshd_config
+RUN mkdir -p /var/run/sshd && echo "Port 22" >> /etc/ssh/sshd_config
 
-COPY entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
+EXPOSE 8080
 
-EXPOSE 443
-
-ENTRYPOINT ["/sbin/tini", "--"]
-CMD ["/entrypoint.sh"]
+CMD ["websockify", "8080", "localhost:22"]
