@@ -1,13 +1,14 @@
 # SSH Panel sur Cloud Run
 
-Proxy SSH déployé sur Google Cloud Run vers VPS 159.89.80.171 (New York).
+Proxy SSH déployé sur Google Cloud Run vers VPS 165.227.234.179 (Londres).
 
 ## Configuration
 | Élément | Valeur |
 |---------|--------|
-| **VPS cible** | `159.89.80.171:22` |
+| **VPS cible** | `165.227.234.179:22` |
 | **Port d'écoute proxy** | `443` |
-| **Région Cloud Run** | `europe-west1` (Belgique) |
+| **Région VPS** | `europe-west2` (Londres, UK) |
+| **Région Cloud Run** | `europe-west2` (Londres, UK) |
 | **Type de proxy** | TCP Stream (Layer 4) |
 
 ## Déploiement
