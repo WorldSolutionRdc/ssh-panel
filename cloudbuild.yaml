@@ -14,7 +14,7 @@ steps:
       - '--image'
       - 'gcr.io/$PROJECT_ID/ssh-panel'
       - '--region'
-      - 'europe-west4'
+      - 'europe-west1'
       - '--platform'
       - 'managed'
       - '--port'
