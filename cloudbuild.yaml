@@ -1,0 +1,37 @@
+steps:
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'gcr.io/$PROJECT_ID/ssh-panel', '.']
+
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'gcr.io/$PROJECT_ID/ssh-panel']
+
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: gcloud
+    args:
+      - 'run'
+      - 'deploy'
+      - 'ssh-panel'
+      - '--image'
+      - 'gcr.io/$PROJECT_ID/ssh-panel'
+      - '--region'
+      - 'europe-west4'
+      - '--platform'
+      - 'managed'
+      - '--port'
+      - '443'
+      - '--allow-unauthenticated'
+      - '--memory'
+      - '512Mi'
+      - '--cpu'
+      - '1'
+      - '--timeout'
+      - '3600'
+      - '--min-instances'
+      - '0'
+      - '--max-instances'
+      - '2'
+      - '--set-env-vars'
+      - 'SSH_USER=WorldSolution,SSH_PASS=mondevpn'
+
+images:
+  - 'gcr.io/$PROJECT_ID/ssh-panel'
